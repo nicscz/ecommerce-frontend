@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - ecommerce-network
+  postgres:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - ecommerce-network
+  redis:
+    container_name: redis
+    image: redis:latest
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    networks:
+      - ecommerce-network
+  frontend:
+    build:
+      context: ./ecommerce-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    networks:
+      - ecommerce-network
+
+networks:
+  ecommerce-network:
+    driver: bridge
