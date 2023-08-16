@@ -3,7 +3,7 @@ version: '3'
 services:
   api:
     build:
-      context: .
+      context: ./ecommerce-backend
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
@@ -20,7 +20,7 @@ services:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: postgres
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ./ecommerce-backend/postgres_data:/var/lib/postgresql/data
     ports:
       - 5432:5432
     networks:
